@@ -59,6 +59,7 @@
   <ItemGroup>
     <Content Include="Dlls\FanControl.Plugins.dll" />
     <Content Include="Dlls\FanControl.Plugins.xml" />
+    <Content Include="Dlls\GpuzShMem.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
