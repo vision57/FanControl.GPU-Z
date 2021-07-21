@@ -17,8 +17,6 @@ ENGLISH version see below.
 
 我这里编译好的插件dll，只在我自己的开发环境Win10+VS2019+.Net SDK上保证正常运行。如果你们的机器环境运行有问题，可以提issue，带上FanControl的日志（就在FanControl的根目录里面），或者自己编译。
 
-这个项目是C#，在VS2019里面的构建目标是`Any CPU`，而我依赖的库`GpuzShMem.dll`是非托管原生C++的。所以，如果你的Windows系统是32位的，那么要用x86/win32版本的`GpuzShMem.dll`，而如果你是64位Windows，那么要用x64版本的`GpuzShMem.dll`。我这里默认附带的`GpuzShMem.dll`是x64的，应该对大部分人来说都没问题。这个问题主要还是我的windows编程技术不太到位，我查了下其实也有办法能够自动识别加载不同版本的dll，不过.NET的机制比较恶心，暂时没闲工夫折腾。
-
 
 ---------
 
@@ -35,5 +33,3 @@ Plugin for [FanControl](https://github.com/Rem0o/FanControl.Releases) that provi
 This project code is mainly modified from official `FanControl` plugin [FanControl.HWInfo](https://github.com/Rem0o/FanControl.HWInfo), and depends on [my own fork](https://github.com/vision57/GpuzShMem) of [JohnnyUT/GpuzShMem](https://github.com/JohnnyUT/GpuzShMem).
 
 Binary releases are tested on my develping environment only, which is Win10+VS2019+dotNet SDK. If it's not working for you, feel free to submit issues, or compile it yourself.
-
-VS2019 building target of this project is `Any CPU`, but the dependency lib `GpuzShMem.dll` is native C++. So if your Windows is 32bit, you should use the `x86`/`win32` build of `GpuzShMem.dll`, and if your Windows is 64bit, you should use the `x64` build of `GpuzShMem.dll`. The default `GpuzShMem.dll` here is `x64`.
