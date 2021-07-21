@@ -55,25 +55,112 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.ComponentModel;
 
 namespace GpuzDemo
 {
+    class AMD64
+    {
+        [DllImport(@"GpuzShMem.x64.dll", SetLastError = true)]
+        public static extern int InitGpuzShMem();
+
+        [DllImport(@"GpuzShMem.x64.dll", SetLastError = true)]
+        public static extern int RemGpuzShMem();
+
+        [DllImport(@"GpuzShMem.x64.dll", SetLastError = true)]
+        public static extern IntPtr GetSensorName(int index);
+
+        [DllImport(@"GpuzShMem.x64.dll", SetLastError = true)]
+        public static extern double GetSensorValue(int index);
+
+        [DllImport(@"GpuzShMem.x64.dll", SetLastError = true)]
+        public static extern IntPtr GetSensorUnit(int index);
+
+        [DllImport(@"GpuzShMem.x64.dll", SetLastError = true)]
+        public static extern IntPtr GetDataKey(int index);
+
+        [DllImport(@"GpuzShMem.x64.dll", SetLastError = true)]
+        public static extern IntPtr GetDataValue(int index);
+    }
+
+    class Win32
+    {
+        [DllImport(@"GpuzShMem.Win32.dll", SetLastError = true)]
+        public static extern int InitGpuzShMem();
+        
+        [DllImport(@"GpuzShMem.Win32.dll", SetLastError = true)]
+        public static extern int RemGpuzShMem();
+
+        [DllImport(@"GpuzShMem.Win32.dll", SetLastError = true)]
+        public static extern IntPtr GetSensorName(int index);
+
+        [DllImport(@"GpuzShMem.Win32.dll", SetLastError = true)]
+        public static extern double GetSensorValue(int index);
+
+        [DllImport(@"GpuzShMem.Win32.dll", SetLastError = true)]
+        public static extern IntPtr GetSensorUnit(int index);
+
+        [DllImport(@"GpuzShMem.Win32.dll", SetLastError = true)]
+        public static extern IntPtr GetDataKey(int index);
+
+        [DllImport(@"GpuzShMem.Win32.dll", SetLastError = true)]
+        public static extern IntPtr GetDataValue(int index);
+    }
+
     public class GpuzWrapper
     {
-        [DllImport(@"GpuzShMem.dll")]
-        private static extern int InitGpuzShMem();
-        [DllImport(@"GpuzShMem.dll")]
-        private static extern int RemGpuzShMem();
-        [DllImport(@"GpuzShMem.dll")]
-        private static extern IntPtr GetSensorName(int index);
-        [DllImport(@"GpuzShMem.dll")]
-        private static extern double GetSensorValue(int index);
-        [DllImport(@"GpuzShMem.dll")]
-        private static extern IntPtr GetSensorUnit(int index);
-        [DllImport(@"GpuzShMem.dll")]
-        private static extern IntPtr GetDataKey(int index);
-        [DllImport(@"GpuzShMem.dll")]
-        private static extern IntPtr GetDataValue(int index);
+
+        delegate int InitGpuzShMem();
+
+        static readonly InitGpuzShMem initGpuzShMem;
+
+        delegate int RemGpuzShMem();
+
+        static readonly RemGpuzShMem remGpuzShMem;
+
+        delegate IntPtr GetSensorName(int index);
+
+        static readonly GetSensorName getSensorName;
+
+        delegate double GetSensorValue(int index);
+
+        static readonly GetSensorValue getSensorValue;
+
+        delegate IntPtr GetSensorUnit(int index);
+
+        static readonly GetSensorUnit getSensorUnit;
+
+        delegate IntPtr GetDataKey(int index);
+
+        static readonly GetDataKey getDataKey;
+
+        delegate IntPtr GetDataValue(int index);
+
+        static readonly GetDataValue getDataValue;
+
+        static GpuzWrapper()
+        {
+            if (Environment.Is64BitOperatingSystem)
+            {
+                initGpuzShMem = AMD64.InitGpuzShMem;
+                remGpuzShMem = AMD64.RemGpuzShMem;
+                getSensorName = AMD64.GetSensorName;
+                getSensorValue = AMD64.GetSensorValue;
+                getSensorUnit = AMD64.GetSensorUnit;
+                getDataKey = AMD64.GetDataKey;
+                getDataValue = AMD64.GetDataValue;
+            } else
+            {
+                initGpuzShMem = Win32.InitGpuzShMem;
+                remGpuzShMem = Win32.RemGpuzShMem;
+                getSensorName = Win32.GetSensorName;
+                getSensorValue = Win32.GetSensorValue;
+                getSensorUnit = Win32.GetSensorUnit;
+                getDataKey = Win32.GetDataKey;
+                getDataValue = Win32.GetDataValue;
+            }
+        }
+
 
         /// <summary>
         /// Opens the shared memory interface for reading. Don't forget to close it if you don't need it anymore!
@@ -81,9 +168,16 @@ namespace GpuzDemo
         /// <exception cref="Exception">If the shared memory could not be opened.</exception>
         public void Open()
         {
-            if (InitGpuzShMem() != 0)
+
+            if (initGpuzShMem() != 0)
             {
-                throw new Exception("An error occured while opening the GPUZ shared memory!");
+                var ec = Marshal.GetLastWin32Error();
+                if (ec == 0x2)
+                {
+                    throw new Win32Exception(ec, "Ensure GPU-Z is running, and then restart FanControl.");
+                }
+
+                throw new Win32Exception(ec);
             }
         }
 
@@ -93,7 +187,7 @@ namespace GpuzDemo
         /// </summary>
         public void Close()
         {
-            RemGpuzShMem();
+            remGpuzShMem();
         }
 
         
@@ -104,7 +198,7 @@ namespace GpuzDemo
         /// <returns>Name of the sensor field.</returns>
         public string SensorName(int index)
         {
-            return Marshal.PtrToStringUni(GetSensorName(index));
+            return Marshal.PtrToStringUni(getSensorName(index));
         }
 
         
@@ -115,7 +209,7 @@ namespace GpuzDemo
         /// <returns>Value of the sensor field.</returns>
         public double SensorValue(int index)
         {
-            return GetSensorValue(index);
+            return getSensorValue(index);
         }
 
         
@@ -126,7 +220,7 @@ namespace GpuzDemo
         /// <returns>Unit of the sensor field.</returns>
         public string SensorUnit(int index)
         {
-            return Marshal.PtrToStringUni(GetSensorUnit(index));
+            return Marshal.PtrToStringUni(getSensorUnit(index));
         }
 
         
@@ -137,7 +231,7 @@ namespace GpuzDemo
         /// <returns>Key of the data field.</returns>
         public string DataKey(int index)
         {
-            return Marshal.PtrToStringUni(GetDataKey(index));
+            return Marshal.PtrToStringUni(getDataKey(index));
         }
 
         
@@ -148,7 +242,7 @@ namespace GpuzDemo
         /// <returns>Value of the data field.</returns>
         public string DataValue(int index)
         {
-            return Marshal.PtrToStringUni(GetDataValue(index));
+            return Marshal.PtrToStringUni(getDataValue(index));
         }
 
         /// <summary>

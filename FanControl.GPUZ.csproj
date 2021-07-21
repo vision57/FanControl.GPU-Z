@@ -35,8 +35,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dlls\FanControl.Plugins.dll</HintPath>
     </Reference>
-    <Reference Include="GpuzShMem">
-      <HintPath>Dlls\GpuzShMem.dll</HintPath>
+    <Reference Include="GpuzShMem.Win32, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dlls\GpuzShMem.Win32.dll</HintPath>
+    </Reference>
+    <Reference Include="GpuzShMem.x64, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dlls\GpuzShMem.x64.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -59,7 +64,10 @@
   <ItemGroup>
     <Content Include="Dlls\FanControl.Plugins.dll" />
     <Content Include="Dlls\FanControl.Plugins.xml" />
-    <Content Include="Dlls\GpuzShMem.dll" />
+    <Content Include="Dlls\GpuzShMem.Win32.dll" />
+    <Content Include="Dlls\GpuzShMem.Win32.pdb" />
+    <Content Include="Dlls\GpuzShMem.x64.dll" />
+    <Content Include="Dlls\GpuzShMem.x64.pdb" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
