@@ -8,7 +8,8 @@ ENGLISH version see below.
 
 ## 安装方法
 
-1. 可以自行编译项目，将`bin/release`里面的编译结果复制到`FanControl`的`plugins`文件夹，也可以直接下载我这里编译好的，复制过去以后注意对每个文件检查右键属性，确保没有被锁定
+1. 推荐直接下载我这里编译发布的`plugins.zip`包，然后直接解压到`FanControl`的`plugins`文件夹中。
+> 也可以自行编译项目，将`bin/release`里面的编译结果复制到`FanControl`的`plugins`文件夹，复制过去以后注意对每个文件检查右键属性，确保没有被锁定。
 2. 先运行`GPU-Z`，然后运行`FanControl`。
 
 ## 备注
@@ -25,7 +26,8 @@ Plugin for [FanControl](https://github.com/Rem0o/FanControl.Releases) that provi
 
 ## To install
 
-1. Copy the bin/release content into FanControl's "plugins" folder, open each file's property dialog(mouse right click), check any tips like `Unblock`.
+1. Download the binary release `plugins.zip`, unzip it into FanControl's `plugins` folder.
+> Or compile project and then copy the `bin/release` content into FanControl's `plugins` folder, open each file's property dialog(mouse right click), check any tips like `Unblock`.
 2. Make sure GPU-Z running before starting FanControl.
 
 ## Remark
