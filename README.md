@@ -25,7 +25,7 @@ Plugin for [FanControl](https://github.com/Rem0o/FanControl.Releases) that provi
 
 ## To install
 
-1. Copy the bin/release content into FanControl's "plugins" folder, check each file's property(mouse right click), make sure `unlock`.
+1. Copy the bin/release content into FanControl's "plugins" folder, open each file's property dialog(mouse right click), check any tips like `Unblock`.
 2. Make sure GPU-Z running before starting FanControl.
 
 ## Remark
